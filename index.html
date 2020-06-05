@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width" />
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700italic,700' rel='stylesheet' type='text/css'>
+  
+  <title>Scratch Card</title>
+  <style type="text/css">
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+.scratchpad{
+  width: 450px;
+  height: 445px;
+  border: solid 10px #FFFFFF;
+  margin:0 auto;
+}
+body {
+    background:#efefef;
+}
+.scratch-container {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width:100%;
+  margin-left: 20px;
+}
+@media only screen and (max-width : 480px) {
+  .scratchpad {width:400px;height:396px;}
+  .scratch-container {width:400px !important;}
+}
+
+/* Custom, iPhone Retina */ 
+@media only screen and (max-width : 320px) {
+  .scratchpad {width:290px;height:287px;}
+  .scratch-container {width:290px !important;}
+}
+.promo-container {
+	background:#FFF;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	width:450px;
+	padding:20px;
+	margin:0 auto;
+	text-align:center;
+	font-family:'Open Sans', Arial,Sans-serif;
+	color:#333;
+	font-size:16px;
+	margin-top:20px;
+}
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: gray;
+  color: white;
+  text-align: center;
+}
+#glow {
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+  
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
+.btn {
+  background:#56CFD2;
+  color:#FFF;
+  padding:10px 25px;
+  display:inline-block;
+  margin-top:15px;
+  margin-left: 12px;
+  text-decoration:none;
+  font-weight:600;
+  text-transform:uppercase;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radiuss:3px;
+}
+  </style>
+
+</head>
+<body onload="return postToGoogle();">
+<div class="scratch-container">
+  <div id="promo" class="scratchpad"></div>
+</div>
+<div class="promo-container" style="background-color: black;">
+  <div id="glow"></div>
+</div>
+<div class='footer'>
+  <p>Abhyuday 2020 organised by SMS LUCKNOW</p>
+</div>
+<script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://jennamolby.com/scratch-and-win/js/wScratchPad.min.js"></script>
+
+<script type="text/javascript">
+  var person="";
+var promoCode = '';
+var topic1 = 'Topic1.png';
+var topic2 = 'Topic2.png';
+var topic3 = 'Topic3.png';
+var topic4 = 'Topic4.png';
+var topicArray= [ topic1, topic2, topic3,topic4];
+selectBG = topicArray[Math.floor(Math.random() * topicArray.length)];
+if (selectBG == topic1) {
+    promoCode = 'Corona Warriors';
+  } else if (selectBG == topic2) {
+    promoCode = 'Atmanirbhar Bharat';
+  }
+  else if(selectBG==topic3)
+  {
+    promoCode = 'Ecosystem reform in Lockdown';
+  } 
+  if (selectBG == topic4) {
+    var promoCode = 'Self upgradation in Lockdown';
+  }
+$('#promo').wScratchPad({
+    // the size of the eraser
+    size : 70,    
+    // the randomized scratch image   
+    bg:selectBG,
+    // give real-time updates
+    realtime : true, 
+    // The overlay image
+    fg:'overlay.png',
+    // The cursor (coin) image
+    cursor: 'url("https://jennamolby.com/scratch-and-win/images/coin1.png") 5 5, default',
+    
+    scratchMove: function (e, percent) {
+        // Show the plain-text promo code and call-to-action when the scratch area is 50% scratched
+        if ((percent > 50) && (promoCode != '')) {
+          console.log(promoCode);
+          $('.promo-container').show();
+          $('body').removeClass('not-selectable');
+          $('.promo-code').html('Your topic is: ' + promoCode);
+        }
+      }
+ });
+function postToGoogle()
+{
+  person = prompt("Please enter your name:", "");
+  while(person==null || person=="")
+  {
+      person = prompt("Please enter your name:", "");
+  }
+    //var field1 = $("#nameField").val();
+    var field2 = promoCode;
+    //if(field1 == ""){
+      //    alert('Please Fill Your College name');
+        //  document.getElementById("nameField").focus();
+          //return false;
+        //}
+        $.ajax({
+                url: "https://docs.google.com/forms/d/e/1FAIpQLSdEuSnTVsxgoN12rfx8P6K_97YZgxuyWn4pKGI3rsltYTz9YQ/formResponse?",
+          data: {"entry.589169801": person,"entry.1228599108":field2},
+                    type: "POST",
+                    dataType: "xml",
+                    success: function(d)
+          {
+          },
+          error: function(x, y, z)
+            {
+              $('#success-msg').show();
+              $('#form').hide();
+              window.alert("submitted sucessfully");
+            }
+                });
+        document.getElementById('glow').innerHTML ="Great "+ person + " Scratch above to get your topic";
+        return false;
+}
+</script>
+      
+
+</body>
+</html>
